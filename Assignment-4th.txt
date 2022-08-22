@@ -1,0 +1,4 @@
+create Passwordless authentication of both servers.
+
+Install Virtualbox Guest Addition on ubuntu-
+apt install build-essential dkms linux-headers-$(uname -r)
