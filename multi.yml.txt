@@ -1,0 +1,30 @@
+---
+  - name: multi configuration
+    hosts: APP
+    vars_files:
+      - ./users/vars.yml
+    tasks:
+      - name: Add multi users
+        user:
+           name: "{{ item.name }}"
+           uid: "{{ item.uid }}"
+           groups: "{{ item.groups }}"
+           state: absent
+        with_items: "{{ user_details }}"
+      - name: create file in /tmp path
+        copy:
+           content: "my name is aniket"
+           dest: /tmp/file1
+      - name: Install multiple Packages
+        apt:
+            name: "{{ item }}"
+            state: absent
+        loop:
+           - git
+           - apache2
+           - tree
+           - wget
+      - name: install tree
+        apt:
+             name: tree
+             state: present
