@@ -1,0 +1,228 @@
+#!/bin/bash
+
+# function to show memory usage
+memoryUsage(){
+       echo "Memory Usage:"
+       free -h
+       read -p "Press any key to Continue...."
+}
+
+# function to show disk usage
+diskUsage(){
+       echo "Disk Usage:"
+       df -hT
+       read -p "Press any key to Continue...."
+}
+
+# function to show calender
+calender(){
+       echo "Yearly calender is:"
+       cal
+       read -p "Press any key to Continue...."
+}
+
+# function to show Current User and ID
+current_user(){
+       echo "current_user:"
+       id
+       read -p "Press any key to Continue...."
+}
+
+# function to show System IP
+IP_address(){
+       echo "System IP address:"
+       hostname -I | awk '{print $1}'
+       read -p "Press any key to Continue...."
+}
+
+# function to show System Hostname
+Hostname(){
+       echo "System Hostname:"
+       hostname
+       read -p "Press any key to Continue...."
+}
+
+# function to show System MAC Address.
+MAC_Address(){
+       echo "MAC Address is:"
+       ifconfig |grep ether | awk '{print $2}'
+       read -p "Press any key to Continue...."
+}
+
+# function to show Current Files
+List_files(){
+       echo "current Folder and Files is:"
+       ls
+       read -p "Press any key to Continue...."
+}
+
+# function to show current path
+Path(){
+       echo "Present Working Dir path is:"
+       pwd
+       read -p "Press any key to Continue...."
+}
+
+# function to show change current user password
+User_pass(){
+       echo "list of Users"
+       getent passwd {1000..1010}
+       echo "type User name:"
+       read user
+       sudo passwd $user
+       read -p "Press any key to Continue...."
+}
+
+# function to show folder and files size of current directory
+current_folder_size(){
+       echo "show Current Directory and file Size:"
+       du -sh *
+       read -p "Press any key to Continue...."
+}
+
+# function to make a directory.
+Make_folder(){
+       ls
+       echo "Created Folder name is:"
+       read directory
+       mkdir $directory
+       echo "Folder Successfully created"
+       read -p "Press any key to Continue...."
+}
+
+# function to Delete directorys
+Delete_files(){
+       echo "show your files is:"
+       ls
+       read dir
+       rm -rf $dir
+       echo "successfully Deleted"
+       read -p "Press any key to Continue...."
+}
+
+# function to copy folder/files source to destination
+Copy_files(){
+       echo "show your files is:"
+       ls
+       echo "type source path"
+       read src
+       echo "copy destination path"
+       read dest
+       cp -rf $src $dest
+       echo "successfully copy to $dest this path"
+       read -p "Press any key to Continue...."
+}
+
+# function to create files
+Make_files(){
+       ls
+       echo "created file name is:"
+       read file
+       touch $file
+       echo "File Successfully created"
+       read -p "Press any key to Continue...."
+}
+
+# function to show folder and files size of current directory
+Ping_check(){
+       echo "Type IP or DNS:"
+       read IP
+       ping $IP -c 2
+       read -p "Press any key to Continue...."
+}
+
+# function to show folder and files size of current directory
+Pkg_install(){
+       echo "Type Package Name:"
+       read pkg
+       sudo apt install $pkg 
+       read -p "Press any key to Continue...."
+}
+
+# function to show folder and files size of current directory
+Pkg_remove(){
+       echo "Type Package Name:"
+       read pkg
+       sudo apt remove $pkg
+       read -p "Press any key to Continue...."
+}
+
+# function to check pkg exit or not.
+Pkg_exist(){
+       echo "Type Package Name:"
+       read pkg
+       which $pkg
+       read -p "Press any key to Continue...."
+}
+
+
+
+# function to show menu
+show_menu()
+{
+       clear
+       echo "++++++++++++ MENU +++++++++++++"
+       echo "1. Show Memory Usage."
+       echo "2. Show DIsk Usage."
+       echo "3. show Yearly Calender"
+       echo "4. Show User Id and current User name"
+       echo "5. Show Machine local IP"
+       echo "6. Show System MAC Address"
+       echo "7. Show system Hostname"
+       echo "8. Show current directory and files"
+       echo "9. show Present Working Path is"
+       echo "10. Change system User Password"
+       echo "11. show current Directory and files size"
+       echo "12. Make a folder"
+       echo "13. Delete files"
+       echo "14. copy files one folder to another"
+       echo "15. Make files"
+       echo "16. Check Ping Connectivity"
+       echo "17. Packages install in system"
+       echo "18. Packages Remove in System"
+       echo "19. Check Packages install or not"
+       echo "20. Exit"
+       echo "+++++++++++++++++++++++++++++++"
+}
+
+# function to take input
+take_input()
+{
+        #take the input and store it in choice variable
+       local choice
+       read -p "Select the option from above menu: " choice
+        
+        #using switch case statement check the choice and call function.
+       case $choice in
+               1) memoryUsage ;;
+               2) diskUsage ;;
+	       3) calender ;;
+	       4) current_user ;;
+	       5) IP_address ;;
+	       6) MAC_Address ;;
+	       7) Hostname ;;
+	       8) List_files ;;
+	       9) Path ;;
+	       10) User_pass ;;
+	       11) current_folder_size ;;
+	       12) Make_folder ;;
+	       13) Delete_files ;;
+	       14) Copy_files ;;
+	       15) Make_files ;;
+	       16) Ping_check ;;
+	       17) Pkg_install ;;
+	       18) Pkg_remove ;;
+	       19) Pkg_exist ;;
+               20) exit 0;;
+               *) echo "Enter Valid Option!!"
+                       read -p "Press any key to Continue...."
+
+         esac
+       }
+
+# for loop to call the show_menu and take_input function.
+while true
+do
+       show_menu
+       take_input
+done

@@ -1,0 +1,14 @@
+#!/bin/bash
+now=$(tzselect)
+echo $now
+echo "=========================="
+echo "selected timzone is $now"
+echo "=========================="
+timedatectl set-timezone $now
+echo "set your Timezone is $now"
+TZ="$now" date
+echo "Universal Time is:"
+timedatectl |grep Universal | awk '{print $2,$3,$4,$5,$6}'
+echo "IST Time is: "
+TZ="Asia/Kolkata" date
+timedatectl set-timezone Asia/Kolkata

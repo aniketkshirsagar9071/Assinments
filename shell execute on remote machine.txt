@@ -1,0 +1,17 @@
+---
+  - name: menu task
+    hosts: APP
+    tasks:
+          - name: Copy the File
+            copy:
+                src: file.sh
+                dest: /tmp
+                mode: 0755
+          - name: Start application
+            shell: "/tmp/file.sh"
+            args:
+                chdir: "/tmp"
+                executable: "/bin/bash"
+            register: command_output
+          - debug:
+                var: command_output.stdout_lines
