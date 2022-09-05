@@ -1,0 +1,57 @@
+pipeline {
+  agent any
+  tools {
+    maven 'maven363'
+  }
+  stages {
+    stage('git Clone') {
+      steps {
+        git 'https://github.com/aniketkshirsagar9071/carts.git'
+        echo 'Code Downloaded'
+      }
+    }  
+    stage('Build') {
+      steps {
+        echo 'this is the Build  job'
+        sh 'mvn clean compile'
+      }
+    }
+
+    stage('Test') {
+      steps {
+        echo 'this is the Test job'
+        sh 'mvn clean test'
+      }
+    }
+
+    stage('Package') {
+      steps {
+        echo 'this is the Package job'
+        sh 'mvn package -DskipTests'
+      }
+    }
+
+    stage('tagging') {
+      steps {
+        echo 'change Tagging'
+        sh 'pwd'
+        sh 'mv  ./target/*.jar  ./target/Aniket_$BUILD_NUMBER.jar'
+      }
+    }
+    
+    stage('Archive') {
+      steps {
+        archiveArtifacts(artifacts: '**target/*.jar', allowEmptyArchive: true)
+      }
+    }
+  }
+  post {
+    failure {
+        emailext body: 'Failue', subject: 'Build', to: 'aniketk@valueaddsofttech.com'
+       }
+    
+    success {
+        emailext body: 'Success', subject: 'Build', to: 'aniketk@valueaddsofttech.com'
+       }
+    }
+  }
