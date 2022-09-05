@@ -1,0 +1,47 @@
+pipeline {
+  agent any
+   tools {
+    maven 'maven363'
+  }
+  stages {
+    stage('git Clone') {
+      steps {
+        git 'https://github.com/aniketkshirsagar9071/carts.git'
+        echo 'Code Downloaded'
+      }
+    }  
+    stage('Build') {
+      steps {
+        echo 'this is the Build  job'
+        sh 'mvn clean compile'
+      }
+    }
+
+    stage('Test') {
+      steps {
+        echo 'this is the Test job'
+        sh 'mvn clean test'
+      }
+    }
+
+    stage('Package') {
+      steps {
+        echo 'this is the Package job'
+        sh 'mvn package -DskipTests'
+      }
+    }
+
+    stage('Archive') {
+      steps {
+        archiveArtifacts(artifacts: '**target/*.jar', allowEmptyArchive: true)
+      }
+    }
+    stage('S3-Upload') {
+      steps {
+        s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 's3-upload-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: true, selectedRegion: 'ap-south-1', showDirectlyInBrowser: false, sourceFile: '**target/*.jar', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 's3-upload', userMetadata: []
+        echo "File Upload to S3 Bucket Successfully"
+      }
+    }
+  }
+ 
+}
