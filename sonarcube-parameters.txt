@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+    parameters {
+        gitParameter name: 'BRANCH_TAG', 
+                     type: 'PT_BRANCH_TAG',
+                     branchFilter: 'origin/(.*)',
+                     defaultValue: 'main',
+                     selectedValue: 'DEFAULT',
+                     sortMode: 'ASCENDING',
+                     listSize: '1',
+                     quickFilterEnabled: true,
+					 description: 'Select your branch or tag.'
+		choice(name: 'SonarQube', choices: ['False','True'],description: '')
+		choice(name: 'Env',choices: ['DEV', 'QA', 'UAT', 'PROD'],description: 'Passing the Environment')
+    }
+    stages {
+        stage('Example') {
+            steps {
+                checkout([$class: 'GitSCM', 
+                          branches: [[name: "${params.BRANCH_TAG}"]], 
+                          doGenerateSubmoduleConfigurations: false, 
+                          extensions: [], 
+                          gitTool: 'Default', 
+                          submoduleCfg: [], 
+                          userRemoteConfigs: [[url: 'https://gitlab.com/devops2583/jupiter.git',]]
+                        ])
+            }
+        }
+    
+         stage('QA Check') {
+		    when {
+	           expression { return env.sonarqube == "True" }
+	        }
+            steps {
+                withSonarQubeEnv('SonarQubeServer') {
+                    sh ' $SonarScannerHome/bin/sonar-scanner ' +
+                    '-Dsonar.sources=src/main ' +
+                    '-Dsonar.projectKey="test" ' +
+                    '-Dsonar.projectName="test" '
+                }
+                timeout(time: 30, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        } 
+        stage('Environment') {
+        steps {
+        echo " The environment is ${params.Env}"
+      }
+    }
+    }
+}
