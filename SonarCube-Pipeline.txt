@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+    parameters {
+        choice(name: 'SonarQube', choices: ['False','True'],description: '')
+		choice(name: 'Env',choices: ['DEV', 'QA', 'UAT', 'PROD'],description: 'Passing the Environment')
+    }
+    stages {
+        stage('git scm') {
+            steps {
+                 git 'https://github.com/aniketkshirsagar9071/carts.git'
+            }
+        }
+    
+        stage('QA Check') {
+		    when {
+	           expression { return env.sonarqube == "True" }
+	        }
+            steps {
+                withSonarQubeEnv('SonarServer') {
+                    sh ' /opt/sonar-scanner/bin/sonar-scanner ' +
+                    '-Dsonar.sources=/var/lib/jenkins/workspace/$JOB_NAME/src ' +
+                    '-Dsonar.projectKey="test" ' +
+                    '-Dsonar.java.binaries=/usr/local/bin ' +
+                    '-Dsonar.projectName="test1" '
+                }
+                
+            }
+        } 
+        stage('Environment') {
+            steps {
+               echo " The environment is ${params.Env}"
+         }
+       }
+    }
+}
