@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('git') {
+            steps {
+                git 'https://github.com/aniketkshirsagar9071/carts.git'
+            }
+        }
+        stage('compile Code') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage('test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Maven Install') {
+            steps {
+                sh 'mvn -DskipTests package'
+            }
+        }
+    }
+}
