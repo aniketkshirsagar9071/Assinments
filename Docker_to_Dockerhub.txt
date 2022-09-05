@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    environment {
+        dockerhub=credentials('Docker_Password')
+    }
+
+    stages {
+        stage('git') {
+            steps {
+                git 'https://github.com/aniketkshirsagar9071/carts.git'
+                echo 'Clone Successfully'
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                sh  'docker build -t aniket9071/myweb123:latest .'
+                echo 'Build Image successfully'
+            }
+        }
+        stage('Docker login') {
+            steps {
+                sh 'docker login -u aniket9071 -p $dockerhub'
+                echo 'Login successfully'
+            }
+        }
+        stage('Docker push') {
+            steps {
+                sh  'docker push aniket9071/myweb123:latest'
+                echo 'Send To Dockerhub successfully'
+            }
+        }
+    }
+}
