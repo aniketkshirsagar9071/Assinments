@@ -8,3 +8,6 @@ Below Plugins Required.
 - Docker Plugin
 - Email Extention plugin
 - Git parameter plugin
+- sonarqube scanner
+- sonar quality gates
+- maven integration plugin
