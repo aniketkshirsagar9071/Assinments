@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    parameters {
+      imageTag credentialId: 'ecr:us-east-1:aws', filter: '.*', image: 'demo1', name: 'DOCKER_IMAGE', registry: 'https://472934307883.dkr.ecr.us-east-1.amazonaws.com'
+}
+
+
+    stages {
+        stage('git') {
+            steps {
+                git 'https://github.com/aniketkshirsagar9071/carts.git'
+                echo 'Code Downloaded Successfully'
+            }
+        }
+        stage('Create Build Image') {
+            steps {
+                sh 'docker run -itd 472934307883.dkr.ecr.us-east-1.amazonaws.com/$DOCKER_IMAGE'
+                echo 'Pull Image Successfully'
+            }
+        }
+        
+    }
+}
+
+
