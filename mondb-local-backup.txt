@@ -1,0 +1,27 @@
+echo "--------------------------BackUp Mongo------------------------------------------------" 
+   TODAY=`date +%d%b%Y%T`
+   BACKUP_DEV=/opt/backup/dev
+   BACKUP_Prod=/opt/backup/prod
+   BACKUP_qa=/opt/backup/qa
+   BACKUP_st=/opt/backup/st
+
+    echo -ne '#####                     (33%)\r'
+    sleep 1
+    echo -ne '#############             (66%)\r'
+    sleep 1
+    echo -ne '#######################   (100%)\r'
+    echo -ne '\n'
+    case $1 in
+        "dev")
+                `mongodump --db dev --out ${BACKUP_DEV}/${TODAY}`
+                ;;
+        "st")
+                `mongodump --db st --out ${BACKUP_st}/${TODAY}`
+                ;;
+        "qa")
+                `mongodump --db qa --out ${BACKUP_qa}/${TODAY}`
+                ;;
+        "prod")
+                `mongodump --db prod --out ${BACKUP_Prod}/${TODAY}`
+                ;;
+esac

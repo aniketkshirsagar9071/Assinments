@@ -1,0 +1,31 @@
+echo "--------------------------BackUp Mongo------------------------------------------------" 
+   TODAY=`date +%d%b%Y%T`
+   BACKUP_aniket=/opt/mongocloud-back/xirify-aniket
+   BACKUP_airbnb=/opt/mongocloud-back/sample_airbnb
+   BACKUP_mflix=/opt/mongocloud-back/sample_mflix
+   BACKUP_geospatial=/opt/mongocloud-back/sample_geospatial
+   BACKUP_harsh=/opt/mongocloud-back/xirify-harsh
+#   echo "database name:"
+#   read databasename
+    echo -ne '#####                     (33%)\r'
+    sleep 1
+    echo -ne '#############             (66%)\r'
+    sleep 1
+    echo -ne '#######################   (100%)\r'
+    echo -ne '\n'
+    case $1 in
+        "xirify-aniket")
+                `mongodump --forceTableScan --uri mongodb+srv://aniket:aniket1234@mydata.d3oiu5q.mongodb.net/xirify-aniket  --out ${BACKUP_aniket}/${TODAY}/dump`
+                ;;
+        "xirify-harsh")
+                `mongodump --forceTableScan --uri mongodb+srv://aniket:aniket1234@mydata.d3oiu5q.mongodb.net/xirify-harsh  --out ${BACKUP_harsh}/${TODAY}/dump`
+                ;;
+        "sample_mflix")
+                `mongodump --forceTableScan --uri mongodb+srv://aniket:aniket1234@mydata.d3oiu5q.mongodb.net/sample_mflix  --out ${BACKUP_mflix}/${TODAY}/dump`
+                ;;
+        "sample_geospatial")
+                `mongodump --forceTableScan --uri mongodb+srv://aniket:aniket1234@mydata.d3oiu5q.mongodb.net/sample_geospatial  --out ${BACKUP_geospatial}/${TODAY}/dump`
+                ;;
+        "sample_airbnb")
+                `mongodump --forceTableScan --uri mongodb+srv://aniket:aniket1234@mydata.d3oiu5q.mongodb.net/sample_airbnb  --out ${BACKUP_airbnb}/${TODAY}/dump`		
+esac

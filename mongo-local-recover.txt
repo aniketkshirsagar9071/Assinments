@@ -1,0 +1,23 @@
+echo "--------------------------BackUp Mongo------------------------------------------------" 
+   TODAY=`date +%d%b%Y%T`
+
+    echo -ne '#####                     (33%)\r'
+    sleep 1
+    echo -ne '#############             (66%)\r'
+    sleep 1
+    echo -ne '#######################   (100%)\r'
+    echo -ne '\n'
+case $1 in
+        "dev")
+                `mongorestore --db dev --drop /opt/backup/dev/$backups/dev`
+                ;;
+        "st")
+                `mongorestore --db st --drop /opt/backup/st/$backups/st`
+                ;;
+        "qa")
+                `mongorestore --db qa --drop /opt/backup/qa/$backups/qa`
+                ;;
+        "prod")
+                `mongorestore --db prod --drop /opt/backup/prod/$backups/prod`
+                ;;
+esac

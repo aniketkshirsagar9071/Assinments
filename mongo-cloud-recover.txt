@@ -1,0 +1,27 @@
+echo "--------------------------BackUp Mongo------------------------------------------------" 
+   TODAY=`date +%d%b%Y%T`
+
+    echo -ne '#####                     (33%)\r'
+    sleep 1
+    echo -ne '#############             (66%)\r'
+    sleep 1
+    echo -ne '#######################   (100%)\r'
+    echo -ne '\n'
+case $1 in
+        "xirify-aniket")
+                `mongorestore --uri mongodb+srv://aniket:aniket1234@mydata.d3oiu5q.mongodb.net/xirify-aniket --drop /opt/mongocloud-back/xirify-aniket/$backups/dump`
+                ;;
+        "sample_mflix")
+                `mongorestore --uri mongodb+srv://aniket:aniket1234@mydata.d3oiu5q.mongodb.net/sample_mflix --drop /opt/mongocloud-back/sample_mflix/$backups/dump`
+                ;;
+        "sample_airbnb")
+                `mongorestore --uri mongodb+srv://aniket:aniket1234@mydata.d3oiu5q.mongodb.net/sample_airbnb --drop /opt/mongocloud-back/sample_airbnb/$backups/dump`
+                ;;
+        "sample_geospatial")
+                `mongorestore --uri mongodb+srv://aniket:aniket1234@mydata.d3oiu5q.mongodb.net/sample_geospatial --drop /opt/mongocloud-back/sample_geospatial/$backups/dump`
+                ;;
+	"xirify-harsh")
+		`mongorestore --uri mongodb+srv://aniket:aniket1234@mydata.d3oiu5q.mongodb.net/xirify-harsh --drop /opt/mongocloud-back/xirify-harsh/$backups/dump`
+		;;
+
+esac
