@@ -1,0 +1,16 @@
+cat /etc/nginx/sites-available/default
+
+# Define which servers to include in the load balancing scheme
+
+        upstream backend {
+                server 172.17.0.2;       //container1
+                server 172.17.0.3;       // container2
+                server 172.17.0.4:3000;  // container3
+        }
+
+        server {
+                listen 80;
+                location / {
+                        proxy_pass http://backend;
+                }
+        }
